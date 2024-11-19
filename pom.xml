@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>OpenJavaLibs</groupId>
 	<artifactId>pojo-tester</artifactId>
-	<version>21.0.0</version>
+	<version>21.0.1</version>
 	<name>pojo-tester</name>
 	<description>Pojo Tester</description>
 	<url>https://github.com/OpenJavaLibs/pojo-tester</url>
@@ -144,12 +144,45 @@
 
 	<build>
 		<plugins>
+			<!-- Attach Source Code -->
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Attach Javadoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.5.0</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<doclint>none</doclint> <!-- Disables strict linting -->
+					<failOnError>false</failOnError>
+					<show>protected</show> <!-- Includes protected and public members -->
+					<additionalJOptions>
+						<additionalJOption>-html5</additionalJOption>
+					</additionalJOptions>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
+
 
 	<distributionManagement>
 		<repository>

@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>		
+		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.5</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
@@ -14,19 +14,25 @@
 	<version>21.0.0</version>
 	<name>pojo-tester</name>
 	<description>Pojo Tester</description>
-	<url />
+	<url>https://github.com/OpenJavaLibs/pojo-tester</url>
 	<licenses>
-		<license />
+		<license>
+			<name>GNU General Public License v3.0</name>
+			<url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
 	</licenses>
+
 	<developers>
-		<developer />
+		<developer>
+			<id>srikanthkapila</id> <!-- Unique identifier for the developer -->
+			<name>Srikanth Kapila</name> <!-- Full name -->
+			<email>srikanthkapila@gmail.com</email> <!-- Contact email -->
+			<organization>OpenJavaLibs</organization> <!-- Organization -->
+			<organizationUrl>https://github.com/OpenJavaLibs</organizationUrl> <!--
+			Organization website -->
+		</developer>
 	</developers>
-	<scm>
-		<connection />
-		<developerConnection />
-		<tag />
-		<url />
-	</scm>
 	<properties>
 		<java.version>21</java.version>
 	</properties>
@@ -64,12 +70,12 @@
 			<artifactId>combinatoricslib3</artifactId>
 			<version>3.4.0</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
-		    <groupId>org.projectlombok</groupId>
-		    <artifactId>lombok</artifactId>
-		    <scope>provided</scope>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<!--
@@ -79,43 +85,44 @@
 			<artifactId>junit-jupiter-api</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+
+		<!--
+		https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
 		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-engine</artifactId>
-		    <scope>test</scope>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 
 		<!-- https://mvnrepository.com/artifact/org.apiguardian/apiguardian-api -->
 		<dependency>
-		    <groupId>org.apiguardian</groupId>
-		    <artifactId>apiguardian-api</artifactId>
-		    <version>1.1.2</version>
+			<groupId>org.apiguardian</groupId>
+			<artifactId>apiguardian-api</artifactId>
+			<version>1.1.2</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.powermock.tests/powermock-tests-utils -->
+		<!--
+		https://mvnrepository.com/artifact/org.powermock.tests/powermock-tests-utils -->
 		<dependency>
-		    <groupId>org.powermock.tests</groupId>
-		    <artifactId>powermock-tests-utils</artifactId>
-		    <version>1.6.6</version>
-		    <scope>test</scope>
+			<groupId>org.powermock.tests</groupId>
+			<artifactId>powermock-tests-utils</artifactId>
+			<version>1.6.6</version>
+			<scope>test</scope>
 		</dependency>
 
 
 		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
 		<dependency>
-		    <groupId>org.mockito</groupId>
-		    <artifactId>mockito-core</artifactId>
-		    <scope>test</scope>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/net.bytebuddy/byte-buddy -->
 		<dependency>
-		    <groupId>net.bytebuddy</groupId>
-		    <artifactId>byte-buddy</artifactId>
-		    <version>1.15.10</version>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
 		</dependency>
 
 		<dependency>
@@ -144,5 +151,13 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>openjavalibs.github</id>
+			<name>GitHub OWNER Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/OpenJavaLibs/pojo-tester</url>
+		</repository>
+	</distributionManagement>
 
 </project>

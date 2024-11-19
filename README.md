@@ -1,2 +1,2 @@
 # pojo-tester
-Pojo Tester Library
+Java Pojo Testing Framework

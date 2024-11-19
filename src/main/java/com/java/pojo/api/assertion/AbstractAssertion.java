@@ -1,0 +1,223 @@
+package com.java.pojo.api.assertion;
+
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.slf4j.Logger;
+import com.java.pojo.api.ClassAndFieldPredicatePair;
+import com.java.pojo.api.ConstructorParameters;
+import com.java.pojo.internal.field.AbstractFieldValueChanger;
+import com.java.pojo.internal.utils.Permutator;
+import com.java.pojo.internal.utils.SublistFieldPermutator;
+import com.java.pojo.internal.utils.ThoroughFieldPermutator;
+import com.java.pojo.internal.tester.AbstractTester;
+import com.java.pojo.internal.utils.ClassLoader;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static com.java.pojo.internal.preconditions.ParameterPreconditions.checkNotBlank;
+import static com.java.pojo.internal.preconditions.ParameterPreconditions.checkNotNull;
+
+
+/**
+ * This is abstract class for all assertion classes.
+ * <p>
+ * For more documentation, please refer <a href="http://pojo.pl">POJO-TESTER User Guide documentation</a>
+ *
+ * @author Piotr Joński
+ * @since 0.1.0
+ */
+public abstract class AbstractAssertion {
+
+    private static final Set<AbstractTester> DEFAULT_TESTERS;
+
+    static {
+        DEFAULT_TESTERS = new HashSet<>();
+        Arrays.stream(Method.values())
+              .map(Method::getTester)
+              .forEach(DEFAULT_TESTERS::add);
+    }
+
+    private final MultiValuedMap<Class<?>, ConstructorParameters> constructorParameters = new ArrayListValuedHashMap<>();
+    Set<AbstractTester> testers = new HashSet<>();
+    private AbstractFieldValueChanger abstractFieldValueChanger;
+    private Permutator permutator = new ThoroughFieldPermutator();
+
+    /**
+     * Specifies what field values changer will be used for testing.
+     *
+     * @param abstractFieldValueChanger field values changer
+     * @return itself
+     * @see AbstractFieldValueChanger
+     */
+    public AbstractAssertion using(final AbstractFieldValueChanger abstractFieldValueChanger) {
+        checkNotNull("abstractFieldValueChanger", abstractFieldValueChanger);
+
+        this.abstractFieldValueChanger = abstractFieldValueChanger;
+        return this;
+    }
+
+    /**
+     * Specifies generation of O(2^N) test objects for N fields.
+     *
+     * @return itself
+     */
+    public AbstractAssertion thoroughly() {
+        this.permutator = new ThoroughFieldPermutator();
+        return this;
+    }
+
+    /**
+     * Specifies generation of O(N) test objects for N fields.
+     *
+     * @return itself
+     */
+    public AbstractAssertion quickly() {
+        this.permutator = new SublistFieldPermutator();
+        return this;
+    }
+
+    /**
+     * Specifies what tests will be performed.
+     *
+     * @param methods methods to test
+     * @return itself
+     * @see Method
+     */
+    public AbstractAssertion testing(final Method... methods) {
+        checkNotNull("methods", methods);
+
+        Arrays.asList(methods)
+              .forEach(this::testing);
+        return this;
+    }
+
+    /**
+     * Specifies what test will be performed.
+     *
+     * @param method method to test
+     * @return itself
+     * @see Method
+     */
+    public AbstractAssertion testing(final Method method) {
+        checkNotNull("method", method);
+
+        final AbstractTester tester = method.getTester();
+        this.testers.add(tester);
+        return this;
+    }
+
+    /**
+     * Performs specified tests on classes using declared field value changer.
+     *
+     * @see Method
+     * @see AbstractFieldValueChanger
+     */
+    public void areWellImplemented() {
+        if (testers.isEmpty()) {
+            testers = DEFAULT_TESTERS;
+        }
+        if (abstractFieldValueChanger != null) {
+            testers.forEach(tester -> tester.setFieldValuesChanger(abstractFieldValueChanger));
+        }
+
+        testers.forEach(tester -> tester.setPermutator(permutator));
+        testers.forEach(tester -> tester.setUserDefinedConstructors(constructorParameters));
+
+        runAssertions();
+    }
+
+    /**
+     * Indicates, that class should be constructed using given constructor parameters. Constructor will be selected
+     * based on constructor parameter's types.
+     *
+     * @param qualifiedClassName        class to instantiate
+     * @param constructorParameters     constructor parameters
+     * @param constructorParameterTypes constructor parameter's types
+     * @return itself
+     * @see ConstructorParameters
+     */
+    public AbstractAssertion create(final String qualifiedClassName,
+                                    final Object[] constructorParameters,
+                                    final Class<?>[] constructorParameterTypes) {
+        checkNotBlank("qualifiedClassName", qualifiedClassName);
+
+        final ConstructorParameters constructorParameter = new ConstructorParameters(constructorParameters,
+                                                                                     constructorParameterTypes);
+        return create(qualifiedClassName, constructorParameter);
+    }
+
+    /**
+     * Indicates, that class should be constructed using given constructor parameters. Constructor will be selected
+     * based on constructor parameter's types.
+     *
+     * @param qualifiedClassName    class to instantiate
+     * @param constructorParameters constructor parameters
+     * @return itself
+     * @see ConstructorParameters
+     */
+    public AbstractAssertion create(final String qualifiedClassName,
+                                    final ConstructorParameters constructorParameters) {
+        checkNotBlank("qualifiedClassName", qualifiedClassName);
+        checkNotNull("constructorParameters", constructorParameters);
+
+        final Class<?> clazz = ClassLoader.loadClass(qualifiedClassName);
+        this.constructorParameters.put(clazz, constructorParameters);
+        return this;
+    }
+
+    /**
+     * Indicates, that class should be constructed using given constructor parameters. Constructor will be selected
+     * based on constructor parameter's types.
+     *
+     * @param clazz                     class to instantiate
+     * @param constructorParameters     constructor parameters
+     * @param constructorParameterTypes constructor parameter's types
+     * @return itself
+     * @see ConstructorParameters
+     */
+    public AbstractAssertion create(final Class<?> clazz,
+                                    final Object[] constructorParameters,
+                                    final Class<?>[] constructorParameterTypes) {
+        checkNotNull("clazz", clazz);
+
+        final ConstructorParameters constructorParameter = new ConstructorParameters(constructorParameters,
+                                                                                     constructorParameterTypes);
+        return create(clazz, constructorParameter);
+    }
+
+
+    /**
+     * Indicates, that class should be constructed using given constructor parameters. Constructor will be selected
+     * based on constructor parameter's types.
+     *
+     * @param clazz                 class to instantiate
+     * @param constructorParameters constructor parameters
+     * @return itself
+     * @see ConstructorParameters
+     */
+    public AbstractAssertion create(final Class<?> clazz, final ConstructorParameters constructorParameters) {
+        checkNotNull("clazz", clazz);
+        checkNotNull("constructorParameters", constructorParameters);
+
+        this.constructorParameters.put(clazz, constructorParameters);
+        return this;
+    }
+
+    protected abstract void runAssertions();
+
+    protected void logTestersAndClasses(final Logger logger,
+                                        final ClassAndFieldPredicatePair... classAndFieldPredicatePairs) {
+        if (logger.isDebugEnabled()) {
+            final String classes = Arrays.stream(classAndFieldPredicatePairs)
+                                         .map(ClassAndFieldPredicatePair::toString)
+                                         .collect(Collectors.joining(", ", "[", "]"));
+
+            logger.debug("Running {} testers on {} classes", testers.size(), classAndFieldPredicatePairs.length);
+            logger.debug("Testers: {}", testers);
+            logger.debug("Classes: {}", classes);
+        }
+    }
+}

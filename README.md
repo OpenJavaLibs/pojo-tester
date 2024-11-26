@@ -13,4 +13,9 @@ Note: The original author of Pojo Tester is credited at Pojo.pl, and the source 
 https://openjavalibs.github.io/pojo-tester/
 
 **Usage Guide**
+
 https://openjavalibs.gitbook.io/pojo-tester/pojo-tester/getting-started
+
+**Downloads**
+
+https://central.sonatype.com/artifact/io.github.openjavalibs/pojo-tester

@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>OpenJavaLibs</groupId>
 	<artifactId>pojo-tester</artifactId>
-	<version>21.0.1</version>
+	<version>21.0.0</version>
 	<name>pojo-tester</name>
 	<description>Pojo Tester</description>
 	<url>https://github.com/OpenJavaLibs/pojo-tester</url>
@@ -187,7 +187,7 @@
 	<distributionManagement>
 		<repository>
 			<id>openjavalibs-github</id>
-			<name>GitHub OWNER Apache Maven Packages</name>
+			<name>OpenJavaLibs Maven Packages</name>
 			<url>https://maven.pkg.github.com/OpenJavaLibs/pojo-tester</url>
 		</repository>
 	</distributionManagement>

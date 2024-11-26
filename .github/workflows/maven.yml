@@ -18,7 +18,7 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
-          server-id: github # value of repository/id field of the pom.xml
+          server-id: openjavalibs-github # value of repository/id field of the pom.xml
           server-username: PACKAGE_PUBLISH_USER # env variable name for username of Artifactory server; value can be anything as it is a transient user
           server-password: PACKAGE_PUBLISH_TOKEN # env variable name for Artifactory access token
       - name: Publish package

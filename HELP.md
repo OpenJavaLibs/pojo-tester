@@ -178,7 +178,7 @@ This POM includes required metadata (**name, description, license, SCM, develope
     <!-- GPG -->
     <gpg.executable>gpg</gpg.executable>
     <!-- Use your long key id; or omit to use the default key -->
-    <gpg.keyname>80FB99EFC46EEF609CA94FC06F71D93E0823BB8B</gpg.keyname>
+    <gpg.keyname><YOUR-GPG-KEY></gpg.keyname>
   </properties>
 
   <build>

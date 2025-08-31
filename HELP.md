@@ -298,7 +298,7 @@ Add the **Portal token** under server id **`central`** and (optionally) a GPG pr
       <properties>
         <gpg.executable>gpg</gpg.executable>
         <!-- Optional: set if you have multiple keys -->
-        <gpg.keyname>80FB99EFC46EEF609CA94FC06F71D93E0823BB8B</gpg.keyname>
+        <gpg.keyname>YOUR-GPG-KEY</gpg.keyname>
         <!-- Avoid plaintext: pass via env in CI. Locally you can omit to use gpg-agent -->
         <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
       </properties>

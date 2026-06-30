@@ -1,6 +1,5 @@
 package com.java.pojo.internal.tester;
 
-
 import com.java.pojo.api.ClassAndFieldPredicatePair;
 import com.java.pojo.internal.field.AbstractFieldValueChanger;
 import com.java.pojo.internal.utils.FieldUtils;

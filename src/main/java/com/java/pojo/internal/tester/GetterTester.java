@@ -1,6 +1,5 @@
 package com.java.pojo.internal.tester;
 
-
 import com.java.pojo.api.ClassAndFieldPredicatePair;
 import com.java.pojo.internal.field.AbstractFieldValueChanger;
 import com.java.pojo.internal.utils.FieldUtils;
@@ -10,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class GetterTester extends AbstractTester {
 
@@ -30,12 +30,17 @@ public class GetterTester extends AbstractTester {
         final List<GetterAndFieldPair> getterAndFieldPairs = findGettersForFields(testedClass, fields);
         final Object instance = objectGenerator.createNewInstance(testedClass);
 
-        getterAndFieldPairs.forEach(eachPair -> testGetter(eachPair, instance));
+        IntStream.range(0, getterAndFieldPairs.size()).forEach(i -> testGetter(getterAndFieldPairs.get(i), instance, i));
     }
 
-    private void testGetter(final GetterAndFieldPair eachPair, final Object instance) {
+    private void testGetter(final GetterAndFieldPair eachPair, final Object instance, final int fieldIndex)) {
         final Method getter = eachPair.getGetter();
         final Field field = eachPair.getField();
+        // Set a unique value for this field before invoking the getter. Using fieldIndex to
+        // differentiate fields of the same type (e.g. two String fields), which prevents false
+        // positives caused by copy-paste getter errors returning the wrong field.
+        final Object uniqueValue = objectGenerator.createUniqueInstance(field.getType(), fieldIndex);
+        FieldUtils.setValue(instance, field, uniqueValue);
         testAssertions.assertThatGetMethodFor(instance)
                       .willGetValueFromField(getter, field);
     }

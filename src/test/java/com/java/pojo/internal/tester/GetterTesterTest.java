@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import com.java.pojo.api.FieldPredicate;
 import com.java.pojo.internal.field.DefaultFieldValueChanger;
 import com.java.pojo.internal.utils.GetterNotFoundException;
+import com.java.pojo.internal.assertion.getter.GetterAssertionError;
 
 import java.util.List;
 
@@ -56,6 +57,18 @@ class GetterTesterTest {
         assertThat(result).isNull();
     }
 
+    @Test
+    void Should_Fail_When_Getter_Returns_Wrong_Field_Of_Same_Type() {
+        // given - a POJO with a copy-paste getter bug: getFieldB() returns fieldA
+        final GetterTester getterTester = new GetterTester(DefaultFieldValueChanger.INSTANCE);
+
+        // when
+        final Throwable result = catchThrowable(() -> getterTester.testAll(CopyPasteGetterBugPojo.class));
+
+        // then - the tester must detect the wrong getter
+        assertThat(result).isInstanceOf(GetterAssertionError.class);
+    }
+    
     @Test
     void Should_Fail_Multiple_Classes() {
         // given

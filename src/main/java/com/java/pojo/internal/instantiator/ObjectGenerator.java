@@ -52,6 +52,30 @@ public class ObjectGenerator {
         return newInstance;
     }
 
+     /**
+     * Creates a new instance of {@code clazz} that is guaranteed to be unique relative to other
+     * instances created for the same type by applying {@code increaseValue} {@code uniquenessIndex}
+     * times. This prevents false positives in getter tests when a POJO has multiple fields of the
+     * same type (e.g. two {@code String} fields).
+     */
+    public Object createUniqueInstance(final Class<?> clazz, final int uniquenessIndex) {
+        Object value = createNewInstance(clazz);
+        for (int i = 0; i < uniquenessIndex && value != null; i++) {
+            try {
+                final Object increased = abstractFieldValueChanger.increaseValue(value);
+                if (increased == null) {
+                    break;
+                }
+                value = increased;
+            } catch (final ClassCastException e) {
+                // A value changer mis-matched this type (pre-existing canChange bug);
+                // stop increasing and use the value we have.
+                break;
+            }
+        }
+        return value;
+    }
+    
     public List<Object> generateDifferentObjects(final ClassAndFieldPredicatePair baseClassAndFieldPredicatePair,
                                                  final ClassAndFieldPredicatePair... classAndFieldPredicatePairs) {
         return generateDifferentObjects(0,

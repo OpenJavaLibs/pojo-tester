@@ -33,7 +33,7 @@ public class GetterTester extends AbstractTester {
         IntStream.range(0, getterAndFieldPairs.size()).forEach(i -> testGetter(getterAndFieldPairs.get(i), instance, i));
     }
 
-    private void testGetter(final GetterAndFieldPair eachPair, final Object instance, final int fieldIndex)) {
+    private void testGetter(final GetterAndFieldPair eachPair, final Object instance, final int fieldIndex) {
         final Method getter = eachPair.getGetter();
         final Field field = eachPair.getField();
         // Set a unique value for this field before invoking the getter. Using fieldIndex to

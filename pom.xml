@@ -33,7 +33,8 @@
 
 	<scm>
 		<connection>scm:git:git://github.com/OpenJavaLibs/pojo-tester.git</connection>
-		<developerConnection>scm:git:ssh://github.com/OpenJavaLibs/pojo-tester.git</developerConnection>
+		<developerConnection>
+			scm:git:ssh://github.com/OpenJavaLibs/pojo-tester.git</developerConnection>
 		<url>https://github.com/OpenJavaLibs/pojo-tester</url>
 	</scm>
 
@@ -160,16 +161,18 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.0</version>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar-no-fork</goal>
-						</goals>
-					</execution>
-				</executions>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<release>21</release>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.34</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -179,7 +182,8 @@
 					<encoding>UTF-8</encoding>
 					<doclint>none</doclint> <!-- Disables strict linting -->
 					<failOnError>false</failOnError>
-					<show>protected</show> <!-- Includes protected and public members -->
+					<show>protected</show> <!-- Includes protected and public
+					members -->
 					<additionalJOptions>
 						<additionalJOption>-html5</additionalJOption>
 					</additionalJOptions>
@@ -217,7 +221,7 @@
 					<publishingServerId>central</publishingServerId>
 				</configuration>
 			</plugin>
-    
+
 		</plugins>
 	</build>
 

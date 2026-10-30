@@ -1,15 +1,15 @@
 package com.java.pojo.internal.tester;
 
-import com.java.pojo.api.ClassAndFieldPredicatePair;
-import com.java.pojo.internal.field.AbstractFieldValueChanger;
-import com.java.pojo.internal.utils.FieldUtils;
-import com.java.pojo.internal.utils.MethodUtils;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import com.java.pojo.api.ClassAndFieldPredicatePair;
+import com.java.pojo.internal.field.AbstractFieldValueChanger;
+import com.java.pojo.internal.utils.FieldUtils;
+import com.java.pojo.internal.utils.MethodUtils;
 
 public class GetterTester extends AbstractTester {
 
@@ -33,7 +33,7 @@ public class GetterTester extends AbstractTester {
         IntStream.range(0, getterAndFieldPairs.size()).forEach(i -> testGetter(getterAndFieldPairs.get(i), instance, i));
     }
 
-    private void testGetter(final GetterAndFieldPair eachPair, final Object instance, final int fieldIndex)) {
+    private void testGetter(final GetterAndFieldPair eachPair, final Object instance, final int fieldIndex) {
         final Method getter = eachPair.getGetter();
         final Field field = eachPair.getField();
         // Set a unique value for this field before invoking the getter. Using fieldIndex to
